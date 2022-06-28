@@ -79,12 +79,27 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+      // might need to call this with the call method to bind 'this' correctly
+      // Input is a board as this
+      // what's rowIndex?
+      // console.log("rowIndex:");
+      // console.log(rowIndex);
+      // Output: lets assume boolean
+      if (_.reduce(this.rows()[rowIndex], function(memo, num) { return memo + num; }) > 1) {
+        return true;
+      }
+      return false;
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      return false; // fixme
+      // 'this' is the board array
+      var board = this.rows();
+      for (var i = 0; i < board.length; i++) {
+        if(this.hasRowConflictAt(i)) { return true; }
+      }
+
+      return false;
     },
 
 
@@ -94,11 +109,23 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+      // Input this board and colIndex
+      var board = this.rows();
+      /*
+      * Iterate through columns first
+      */
+      var sum = 0;
+      for (var i = 0; i < board.length; i++) {
+        sum = sum + board[i][colIndex];
+      }
+      return sum > 1 ? true : false;
+      // Output boolean
+
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
+      // iterate through..
       return false; // fixme
     },
 
