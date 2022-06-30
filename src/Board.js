@@ -96,7 +96,7 @@
       // 'this' is the board array
       var board = this.rows();
       for (var i = 0; i < board.length; i++) {
-        if(this.hasRowConflictAt(i)) { return true; }
+        if (this.hasRowConflictAt(i)) { return true; }
       }
 
       return false;
@@ -125,10 +125,16 @@
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      // iterate through..
-      return false; // fixme
-    },
+      var board = this.rows();
 
+      for (var i = 0; i < board.length; i++) {
+        if (this.hasColConflictAt(i)) {
+          return true;
+        }
+      }
+
+      return false;
+    },
 
 
     // Major Diagonals - go from top-left to bottom-right
@@ -136,11 +142,60 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      // assume number of diagonals is n*2 - 3
+      // start with one corner and iterate from there
+      // first corner is last row (skip)
+      // for each diagonal
+      // add all values from this row to last row
+      // iterate through to get sum for each diagonal
+      // until we reach top right corner (first row)
+
+      // Input: assume first row of the major diagonal.
+      // add values from starting position to row n-1
+      // output boolean, true if sume > 1
+      var board = this.rows();
+      var sum = 0;
+      console.log("board is " + board);
+      console.log("majorDiag thing " + majorDiagonalColumnIndexAtFirstRow);
+      var curCol, curRow;
+
+      if (majorDiagonalColumnIndexAtFirstRow >= 0) {
+        curCol = majorDiagonalColumnIndexAtFirstRow;
+        curRow = 0;
+        // iterate until last column
+        while (curCol < board.length) {
+          sum = sum + board[curRow][curCol];
+          curCol++;
+          curRow++;
+        }
+      } else {
+        curCol = 0;
+        curRow = -majorDiagonalColumnIndexAtFirstRow;
+
+        while (curRow < board.length) {
+          sum = sum + board[curRow][curCol];
+          curCol++;
+          curRow++;
+        }
+      }
+
+      return sum > 1 ? true : false;
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
+      // assume number of diagonals is n*2 - 3
+
+      // Iterate through first row diagonals
+      // From row 0 col 0 to row 0 col n-1
+        // checkDiagonal
+      // From row 1 to row n-1
+        //checkDiagonal
+
+        //checkDiagonal = function(){
+          // given starting position, iterate through column row pairs adding 1 to both until row index or ////////column index reaches n-1
+          // starting position can be negative
+
       return false; // fixme
     },
 
