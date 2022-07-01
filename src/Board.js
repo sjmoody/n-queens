@@ -155,8 +155,8 @@
       // output boolean, true if sume > 1
       var board = this.rows();
       var sum = 0;
-      console.log("board is " + board);
-      console.log("majorDiag thing " + majorDiagonalColumnIndexAtFirstRow);
+      // console.log("board is " + board);
+      // console.log("majorDiag thing " + majorDiagonalColumnIndexAtFirstRow);
       var curCol, curRow;
 
       if (majorDiagonalColumnIndexAtFirstRow >= 0) {
