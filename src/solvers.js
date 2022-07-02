@@ -26,12 +26,12 @@ window.findNRooksSolution = function(n) {
   // until number of pieces = n
   // or we reach max x max y
 
-//   Rather than setting or getting object properties directly with plain JavaScript, Backbone provides the get and set methods. Play with the getters and setters that Backbone provides
-// example: board.get(3) will return the 3rd row of the instance board (assuming that instance exists)
+  //   Rather than setting or getting object properties directly with plain JavaScript, Backbone provides the get and set methods. Play with the getters and setters that Backbone provides
+  // example: board.get(3) will return the 3rd row of the instance board (assuming that instance exists)
 
-//    togglePiece: function(rowIndex, colIndex) {} toggles value at position
-//  _isInBounds: function(rowIndex, colIndex) {} returns if rowIndex and colIndex within range of the board
-// hasAnyRooksConflicts
+  //    togglePiece: function(rowIndex, colIndex) {} toggles value at position
+  //  _isInBounds: function(rowIndex, colIndex) {} returns if rowIndex and colIndex within range of the board
+  // hasAnyRooksConflicts
   var solution = new Board({n: n});
 
   var rowsToAvoid = [];
@@ -61,51 +61,64 @@ window.countNRooksSolutions = function(n) {
   var x = 0;
   var y = 0;
 
-
+  var solutions = [];
+  var badSolutions = [];
   // fresh board
   do {
+    //debugger;
     var rowsToAvoid = [];
     var colsToAvoid = [];
     var piecesOnBoard = 0;
 
+    debugger;
 
     var firstPiece = [x, y];
     var solution = new Board({n: n});
-    solution.togglePiece(x, y);
-    rowsToAvoid.push(x);
-    colsToAvoid.push(y);
+    solution.togglePiece(y, x);
+    rowsToAvoid.push(y);
+    colsToAvoid.push(x);
     piecesOnBoard++;
-    // var boardLength = solution.rows().length;
-    for (var i = 0; i < n; i++ ) {
-
-      // iterate through columns on one row
-      if (_.contains(rowsToAvoid, i)) {
-        continue;
-      }
-      for (var j = 0; j < n; j++) {
-        if (_.contains(colsToAvoid, j)) {
-          // alert(solution.rows().length);
-          continue;
-        }
-        // place piece
-        solution.togglePiece(i, j);
-        rowsToAvoid.push(i);
-        colsToAvoid.push(j);
-        piecesOnBoard++;
-      }
-    }
-
     // Increment next first position on board
-    if (piecesOnBoard === n ) {
-      solutionCount++;
-    }
     if (x === n - 1 && y < n - 1) {
-      //  at end of row
+      // if at end of row, and another row exists
+      // go down a row
       x = 0;
       y++;
     } else {
       x++;
     }
+    debugger;
+    // iterate through rows
+    for (var row = y; row < n; row++) {
+      if (_.contains(rowsToAvoid, row)) {
+        continue;
+      }
+      // iterate through columns on one row
+      for (var col = x; col < n; col++) {
+        if (_.contains(colsToAvoid, col)) {
+          // alert(solution.rows().length);
+          continue;
+        }
+        // place piece
+        solution.togglePiece(col, row);
+        if (solution.hasAnyRooksConflicts()) {
+          debugger;
+        }
+        rowsToAvoid.push(row);
+        colsToAvoid.push(col);
+        piecesOnBoard++;
+      }
+    }
+
+    if (piecesOnBoard >= n) {
+      if (solution.hasAnyRooksConflicts) {
+        badSolutions.push(solution);
+      }
+      solutionCount++;
+      solutions.push(solution.rows());
+    }
+
+    //debugger;
 
   } while (solution._isInBounds(x, y));
   /*
@@ -118,13 +131,15 @@ window.countNRooksSolutions = function(n) {
   // Check if pieces on board is n; if so increment solution
   */
 
-
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
+  //debugger;
   return solutionCount;
 };
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
+
+  //
   var solution = undefined; //fixme
 
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
